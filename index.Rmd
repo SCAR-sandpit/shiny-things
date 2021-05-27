@@ -1,0 +1,265 @@
+---
+title: "R Shiny"
+author: "Ben Raymond"
+date: "<div id='logo_footer'><img src='extra/logos.png' /></div>"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    seal: false
+    self_contained: false
+    css: ["extra/extra.css"]
+    chakra: libs/remark-latest.min.js
+    nature:
+      highlightStyle: zenburn
+      highlightLines: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+options(knitr.kable.NA = "")
+knitr::opts_chunk$set(fig.path = "extra/", echo = TRUE, warning = FALSE, message = FALSE, cache = TRUE)
+```
+
+class: inverse
+
+<div style="position: absolute; width: 100%; bottom: 0; left: 0; background-color: #FFF;"><img src="extra/logos.png" /></div>
+
+# Shiny apps with R
+
+Ben Raymond
+
+<img src="https://raw.githubusercontent.com/rstudio/shiny/master/man/figures/logo.png" style="float: right; width: 30%; clear: none;" />
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Intro
+
+https://github.org/SCAR-sandpit/shiny-things
+
+
+## R setup
+
+```{r eval = FALSE}
+req <- c("shiny", "shinythemes", "shinyjs", "ggplot2", "dplyr",
+         "DT", "leaflet", "reactlog", "ggiraph")
+req <- setdiff(req, rownames(installed.packages()))
+if (length(req)) install.packages(req)
+
+```
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# A very minimal app
+
+#### example_01.R
+
+```{r eval = FALSE}
+library(shiny)
+
+ui <- fluidPage(
+    "Hello!"
+)
+
+server <- function(input, output, session) {
+}
+
+runApp(shinyApp(ui, server))
+
+```
+
+> Listening on http://127.0.0.1:4187
+
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Reactivity
+
+#### example_02.R
+
+```{r eval = FALSE}
+ui <- fluidPage(
+    selectInput("in1", label = "Make a choice",
+                choices = c("Option 1", "Option 2")),
+    textOutput("out1")
+)
+
+server <- function(input, output, session) {
+    output$out1 <- renderText({
+        paste0("You have chosen: ", input$in1)
+    })
+}
+
+runApp(shinyApp(ui, server))
+
+```
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Reactive graph
+
+```{r eval = FALSE}
+reactlog::reactlog_enable()
+reactlog::reactlogReset()
+source("app_code/example_02.R")
+
+```
+
+Exit the app and `shiny::reactlogShow()`
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Reactivity
+
+#### example_03.R
+
+- multiple reactive elements
+- `req(...)`
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Reactivity
+
+#### example_04.R
+
+- updating a selection based on existing value
+- `isolate(...)`
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# App structure
+
+1. `ui`, `server` functions
+  - call with `shinyApp(ui, server)`
+
+2. directory with `global.R`, `ui.R`, `server.R`
+  - call with `shinyAppDir(dir_name)`
+
+3. directory with `app.R` that defines the `ui` and `server` functions
+  - call with `shinyAppDir(dir_name)`
+
+4. R package, e.g. with `golem`
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Getting data in
+
+- pre-bundled data
+- retrieve from online
+  - http download
+  - dropbox or other cloud storage
+- user uploads e.g. via `shiny::fileInput` or [shinyFiles](https://github.com/thomasp85/shinyFiles)
+
+Remember that the client is on the other side of a web browser, so your server code can't see the user's file system and vice-versa.
+
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Styling and layout
+
+- arbitrary HTML and CSS
+- default bootstrap theme and layout helpers
+- [shinyMobile](https://github.com/RinteRface/shinyMobile), [shinymaterial](https://ericrayanderson.github.io/shinymaterial/), [shiny.semantic](https://appsilon.github.io/shiny.semantic/), ...
+
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Styling and layout
+
+#### Themes
+
+- https://rstudio.github.io/shinythemes/
+
+```{r eval = FALSE}
+ui <- fluidPage(theme = shinythemes::shinytheme("simplex"), ...)
+
+```
+
+## UI elements
+
+- `tabsetPanel`, `sidebarLayout`
+
+- `fluidRow`, `column`
+
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Tables
+
+- `DT` (and [gt](https://gt.rstudio.com/), `knitr::kable`, `kableExtra`, `reactable`, `formattable` ...)
+
+- `filter` and other controls
+- `input$table1_rows_selected`
+- `input$table1_rows_all`
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Interactive plots
+
+- some interactivity via shiny itself
+- `ggiraph` (or `plotly`, `rbokeh`, ...)
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Maps
+
+- maps can just be plotted with `ggplot2` or `SOmap` or whatever you usually use
+- but also interactive maps with e.g. `leaflet`
+
+
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Data output
+
+- `downloadButton` and `downloadHandler`
+
+---
+
+class: bottom
+background-image: url(extra/iceland.gif)
+background-size: auto 100%
+background-position: center center
+
+
+
