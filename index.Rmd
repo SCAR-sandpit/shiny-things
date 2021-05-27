@@ -130,12 +130,30 @@ background-position: 98% 98%
 - multiple reactive elements
 - `req(...)`
 
+- `observe` and `observeEvent`
+
 ---
 background-image: url(extra/logos.png)
 background-size: auto 10%
 background-position: 98% 98%
 
 # Reactivity
+
+Circularity ...
+
+```{r eval = FALSE}
+counter <- reactiveVal(0)
+x <- reactiveVal(NULL)
+observe({
+    x()
+    counter(counter() + 1)
+    if (counter() %% 10 == 0) {
+        ## do something
+    }
+})
+
+```
+
 
 #### example_04.R
 
@@ -255,11 +273,27 @@ background-position: 98% 98%
 - `downloadButton` and `downloadHandler`
 
 ---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Deploying and sharing
+
+- via shinyapps.io or your own server (e.g. NecTAR VM)
+- share code directly (ideally as an R package)
+
+---
 
 class: bottom
 background-image: url(extra/iceland.gif)
 background-size: auto 100%
 background-position: center center
 
+# Resources
 
+https://mastering-shiny.org/index.html
+
+https://bookdown.org/hadrien/how_to_build_a_shiny_app_from_scratch/
+
+https://engineering-shiny.org/
 

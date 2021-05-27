@@ -16,7 +16,8 @@ ui <- fluidPage(
     selectInput("data_choice", label = "Choose data:", choices = c("Track", "Survey")),
     selectInput("colour_choice", label = "Choose colour var:", choices = NULL),
     plotOutput("plot1"),
-    tableOutput("table1")
+    tableOutput("table1"),
+    verbatimTextOutput("text1")
 )
 
 server <- function(input, output, session) {
@@ -36,6 +37,8 @@ server <- function(input, output, session) {
         if (!sel %in% chc) sel <- NULL
         updateSelectInput(session, inputId = "colour_choice", choices = chc, selected = sel)
     })
+
+    output$text1 <- renderPrint(summary(mydata()))
 
     output$table1 <- renderTable({
         mydata()

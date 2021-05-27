@@ -21,7 +21,6 @@ ui <- fluidPage(
 server <- function(input, output, session) {
     mydata <- reactive({
         req(input$data_choice) ## require a "truthy" value here
-        cat("updating mydata() to: ", input$data_choice, "\n")
         if (input$data_choice == "Track") {
             track_data
         } else {
@@ -39,9 +38,8 @@ server <- function(input, output, session) {
     })
 
     output$plot1 <- renderPlot({
-        cat("updating plot\n")
-        cat("colour choice is: ", capture.output(str(input$colour_choice)), "\n")
         req(mydata(), input$colour_choice)
+        req(input$colour_choice %in% names(mydata()))
         ggplot(mydata(),
                aes_string(x = "lon", y = "lat", colour = input$colour_choice)) +
             geom_point() + theme_bw()

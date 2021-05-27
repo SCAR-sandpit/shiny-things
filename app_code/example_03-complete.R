@@ -39,6 +39,7 @@ server <- function(input, output, session) {
         cat("updating plot\n")
         cat("colour choice is: ", capture.output(str(input$colour_choice)), "\n")
         req(mydata(), input$colour_choice)
+        req(input$colour_choice %in% names(mydata()))
         ggplot(mydata(),
                aes_string(x = "lon", y = "lat", colour = input$colour_choice)) +
             geom_point() + theme_bw()

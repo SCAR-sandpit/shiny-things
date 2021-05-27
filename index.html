@@ -27,9 +27,9 @@ background-image: url(extra/logos.png)
 background-size: auto 10%
 background-position: 98% 98%
 
-# Background
+# Intro
 
-https://github.org/SCAR/shiny-things
+https://github.org/SCAR-sandpit/shiny-things
 
 
 ## R setup
@@ -122,12 +122,30 @@ background-position: 98% 98%
 - multiple reactive elements
 - `req(...)`
 
+- `observe` and `observeEvent`
+
 ---
 background-image: url(extra/logos.png)
 background-size: auto 10%
 background-position: 98% 98%
 
 # Reactivity
+
+Circularity ...
+
+
+```r
+counter &lt;- reactiveVal(0)
+x &lt;- reactiveVal(NULL)
+observe({
+    x()
+    counter(counter() + 1)
+    if (counter() %% 10 == 0) {
+        ## do something
+    }
+})
+```
+
 
 #### example_04.R
 
@@ -163,9 +181,9 @@ background-position: 98% 98%
 - retrieve from online
   - http download
   - dropbox or other cloud storage
-- user uploads e.g. via `shiny::fileInput`
+- user uploads e.g. via `shiny::fileInput` or [shinyFiles](https://github.com/thomasp85/shinyFiles)
 
-Remember that the client is on the other side of a web browser, and your server code can't see the user's file system (potentially running on another machine).
+Remember that the client is on the other side of a web browser, so your server code can't see the user's file system and vice-versa.
 
 
 ---
@@ -176,8 +194,8 @@ background-position: 98% 98%
 # Styling and layout
 
 - arbitrary HTML and CSS
-- bootstrap, themes
-- [shinyMobile](https://github.com/RinteRface/shinyMobile), [shinymaterial](https://ericrayanderson.github.io/shinymaterial/), [shiny.semantic](https://appsilon.github.io/shiny.semantic/), other packages
+- default bootstrap theme and layout helpers
+- [shinyMobile](https://github.com/RinteRface/shinyMobile), [shinymaterial](https://ericrayanderson.github.io/shinymaterial/), [shiny.semantic](https://appsilon.github.io/shiny.semantic/), ...
 
 
 ---
@@ -193,7 +211,7 @@ background-position: 98% 98%
 
 
 ```r
-ui &lt;- fluidPage(theme = shinythemes::shinytheme("spacelab"), ...)
+ui &lt;- fluidPage(theme = shinythemes::shinytheme("simplex"), ...)
 ```
 
 ## UI elements
@@ -247,11 +265,29 @@ background-position: 98% 98%
 - `downloadButton` and `downloadHandler`
 
 ---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Deploying and sharing
+
+- via shinyapps.io or your own server (e.g. NecTAR VM)
+- share code directly (ideally as an R package)
+
+---
 
 class: bottom
 background-image: url(extra/iceland.gif)
 background-size: auto 100%
 background-position: center center
+
+# Resources
+
+https://mastering-shiny.org/index.html
+
+https://bookdown.org/hadrien/how_to_build_a_shiny_app_from_scratch/
+
+https://engineering-shiny.org/
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="libs/remark-latest.min.js"></script>
