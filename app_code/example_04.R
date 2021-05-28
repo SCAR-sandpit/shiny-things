@@ -32,7 +32,7 @@ server <- function(input, output, session) {
         cat("updating choices\n")
         req(mydata())
         chc <- names(mydata())
-        sel <- input$colour_choice ## use isolate(...) around this!
+        sel <- input$colour_choice
         if (!sel %in% chc) sel <- NULL
         updateSelectInput(session, inputId = "colour_choice", choices = chc, selected = sel)
     })

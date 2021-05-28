@@ -45,7 +45,9 @@ https://github.org/SCAR-sandpit/shiny-things
 ```{r eval = FALSE}
 req <- c("shiny", "shinythemes", "shinyjs", "ggplot2", "dplyr",
          "DT", "leaflet", "reactlog", "ggiraph")
+
 req <- setdiff(req, rownames(installed.packages()))
+
 if (length(req)) install.packages(req)
 
 ```
@@ -142,11 +144,13 @@ background-position: 98% 98%
 Circularity ...
 
 ```{r eval = FALSE}
+x <- reactiveVal("blah")
+
 counter <- reactiveVal(0)
-x <- reactiveVal(NULL)
 observe({
     x()
-    counter(counter() + 1)
+    current_count <- counter()
+    counter(current_count + 1)
     if (counter() %% 10 == 0) {
         ## do something
     }
@@ -154,6 +158,12 @@ observe({
 
 ```
 
+---
+background-image: url(extra/logos.png)
+background-size: auto 10%
+background-position: 98% 98%
+
+# Reactivity
 
 #### example_04.R
 
