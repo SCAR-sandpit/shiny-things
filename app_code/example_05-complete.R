@@ -18,6 +18,7 @@ survey_data <- tibble(lon = runif(25, min = 100, max = 120),
 ui <- fluidPage(theme = shinythemes::shinytheme("simplex"),
                 useShinyjs(),
                 tags$h1("My amazing Shiny app"),
+                fluidRow(column(6, "Some text on the left"), column(6, "Some text on the right")),
                 sidebarLayout(
                     sidebarPanel(selectInput("data_choice", label = "Choose data:", choices = c("Track", "Survey")),
                                  selectInput("colour_choice", label = "Choose colour var:", choices = NULL),
@@ -90,7 +91,7 @@ server <- function(input, output, session) {
             p <- p + geom_point(data = mydata()[input$table1_rows_selected, ], color = "red", size = 3)
         }
 
-        girafe_options(girafe(ggobj = p), opts_zoom(max = 5))##opts_selection(type = "multiple"), )
+        girafe_options(girafe(ggobj = p), opts_zoom(max = 5))
     })
 
     output$map1 <- renderLeaflet({
